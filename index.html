@@ -1,388 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WATCHEYE | Smart Flood Monitoring System</title>
-<meta name="description" content="WATCHEYE: An Arduino-based smart flood monitoring and early-warning system designed for real-time water-level detection and automated SMS alerts.">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-.gradient-text {
-background: linear-gradient(to right, #2563eb, #3b82f6);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-.hero-image {
-background-image: url('https://images.unsplash.com/photo-1547683905-f686c993aae5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-background-size: cover;
-background-position: center;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WATCHEYE | Smart Flood Monitoring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        
+        .hero-gradient {
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.85), rgba(30, 58, 138, 0.7)), 
+                        url('https://images.unsplash.com/photo-1547683905-f686c993aae5?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-200">
+<body class="bg-slate-950 text-slate-200">
 
-<!-- Navigation -->
-<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex justify-between h-16 items-center">
-<div class="flex items-center space-x-2">
-<i class="fas fa-eye text-blue-600 text-2xl"></i>
-<span class="text-xl font-bold tracking-tight text-slate-800 uppercase">WatchEye</span>
-</div>
-<div class="hidden md:flex space-x-8">
-<a href="#about" class="text-slate-600 hover:text-blue-600 font-medium transition">About</a>
-<a href="#features" class="text-slate-600 hover:text-blue-600 font-medium transition">Features</a>
-<a href="#technology" class="text-slate-600 hover:text-blue-600 font-medium transition">Technology</a>
-<a href="#results" class="text-slate-600 hover:text-blue-600 font-medium transition">Results</a>
-<a href="#team" class="text-slate-600 hover:text-blue-600 font-medium transition">Team</a>
-</div>
-<div class="md:hidden">
-<button id="mobile-menu-btn" class="p-2 text-slate-600 hover:text-blue-600 focus:outline-none">
-<i class="fas fa-bars text-xl"></i>
-</button>
-</div>
-</div>
-</div>
-<!-- Mobile Menu -->
-<div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-2">
-<a href="#about" class="block py-2 text-slate-600 font-medium">About</a>
-<a href="#features" class="block py-2 text-slate-600 font-medium">Features</a>
-<a href="#technology" class="block py-2 text-slate-600 font-medium">Technology</a>
-<a href="#results" class="block py-2 text-slate-600 font-medium">Results</a>
-<a href="#team" class="block py-2 text-slate-600 font-medium">Team</a>
-</div>
-</nav>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center glass-dark rounded-full px-8 py-3">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-eye text-white text-sm"></i>
+                </div>
+                <span class="text-xl font-bold tracking-tighter text-white">WATCHEYE</span>
+            </div>
+            <div class="hidden md:flex space-x-10 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                <a href="#about" class="hover:text-blue-400 transition">About</a>
+                <a href="#cebu" class="hover:text-blue-400 transition">Cebu Context</a>
+                <a href="#prototype" class="hover:text-blue-400 transition">Prototype</a>
+                <a href="#team" class="hover:text-blue-400 transition">Our Team</a>
+            </div>
+            <a href="#prototype" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-6 py-2 rounded-full font-bold transition shadow-lg shadow-blue-900/20">
+                EXPLORE
+            </a>
+        </div>
+    </nav>
 
-<!-- Hero Section -->
-<header class="relative bg-slate-900 text-white py-24 lg:py-32 overflow-hidden">
-<div class="absolute inset-0 opacity-40 hero-image"></div>
-<div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent"></div>
-<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="max-w-3xl">
-<span class="inline-block px-3 py-1 rounded-full bg-blue-600/20 text-blue-400 text-sm font-semibold mb-6 border border-blue-500/30 backdrop-blur-sm">
-CAPSTONE PROJECT 2025
-</span>
-<h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-WATCHEYE: Smart Flood <br> Monitoring System
-</h1>
-<p class="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed max-w-2xl">
-An advanced, IoT-driven early-warning solution designed to enhance community safety through real-time water-level detection and automated emergency notifications.
-</p>
-<div class="flex flex-col sm:flex-row gap-4">
-<a href="#about" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition transform hover:-translate-y-1">
-Learn More
-</a>
-<a href="#features" class="inline-flex items-center justify-center px-6 py-3 border border-slate-700 text-base font-semibold rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition transform hover:-translate-y-1">
-Explore Features
-</a>
-</div>
-</div>
-</div>
-</header>
+    <!-- Header / Hero Section -->
+    <header class="hero-gradient min-h-screen flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full blur-[120px] animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500 rounded-full blur-[120px] animate-pulse"></div>
+        </div>
 
-<!-- About Section -->
-<section id="about" class="py-20 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid md:grid-cols-2 gap-12 items-center">
-<div class="order-2 md:order-1">
-<div class="relative">
-<img src="https://images.unsplash.com/photo-1545239351-ef35f43d514b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Flood disaster in urban area" class="rounded-2xl shadow-2xl relative z-10">
-<div class="absolute -bottom-6 -right-6 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply opacity-70 filter blur-3xl animate-pulse"></div>
-<div class="absolute -top-6 -left-6 w-64 h-64 bg-slate-200 rounded-full mix-blend-multiply opacity-70 filter blur-3xl animate-pulse delay-700"></div>
-</div>
-</div>
-<div class="order-1 md:order-2">
-<h2 class="text-3xl font-bold text-slate-900 mb-6">The Challenge: Rising Water, Late Warnings</h2>
-<p class="text-slate-600 text-lg mb-6 leading-relaxed">
-Flooding remains one of the most destructive natural hazards worldwide, especially in disaster-prone regions like the Philippines. Communities in low-lying areas often lack accessible, real-time data to prepare for rapid water rises.
-</p>
-<p class="text-slate-600 text-lg mb-8 leading-relaxed">
-<strong>WATCHEYE</strong> bridges this gap. By integrating ultrasonic sensors and GSM communication, we provide an affordable, community-centered solution that informs residents immediately when flood thresholds are crossed.
-</p>
-<div class="grid grid-cols-2 gap-6">
-<div class="flex flex-col">
-<span class="text-4xl font-bold text-blue-600 mb-2">159</span>
-<span class="text-sm text-slate-500 uppercase tracking-wider font-semibold">Lives lost in 2024</span>
-</div>
-<div class="flex flex-col">
-<span class="text-4xl font-bold text-blue-600 mb-2">P18B</span>
-<span class="text-sm text-slate-500 uppercase tracking-wider font-semibold">In damages (Kristine)</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
+        <div class="z-10 max-w-5xl animate-float">
+            <span class="inline-block py-1 px-4 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold tracking-widest mb-6 uppercase">
+                A Smart Flood Monitoring and Early-Warning System
+            </span>
+            <h1 class="text-6xl md:text-8xl font-montserrat font-extrabold text-white mb-8 tracking-tighter text-glow">
+                WATCHEYE
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-300 font-light leading-relaxed max-w-3xl mx-auto mb-10">
+                Enhancing community preparedness through real-time water detection and automated emergency notifications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#about" class="bg-white text-slate-900 font-bold px-10 py-4 rounded-xl hover:bg-blue-50 transition shadow-xl">
+                    Our Mission
+                </a>
+                <a href="#prototype" class="glass text-white font-bold px-10 py-4 rounded-xl hover:bg-white/10 transition">
+                    The Technology
+                </a>
+            </div>
+        </div>
 
-<!-- Features Section -->
-<section id="features" class="py-20 bg-slate-50 overflow-hidden">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center max-w-3xl mx-auto mb-16">
-<h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-3">Key Capabilities</h2>
-<h3 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Precision Monitoring. Instant Action.</h3>
-<p class="text-slate-600 text-lg">WATCHEYE is built to be reliable, low-cost, and easy to deploy in any flood-prone barangay.</p>
-</div>
+        <div class="absolute bottom-10 scroll-indicator text-slate-500">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
+    </header>
 
-<div class="grid md:grid-cols-3 gap-8">
-<!-- Feature 1 -->
-<div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group">
-<div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 text-2xl mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-<i class="fas fa-microchip"></i>
-</div>
-<h4 class="text-xl font-bold text-slate-900 mb-4">Real-Time Detection</h4>
-<p class="text-slate-600 leading-relaxed">
-Uses high-precision ultrasonic sensors to continuously track water-level changes with sub-centimeter accuracy.
-</p>
-</div>
-<!-- Feature 2 -->
-<div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group">
-<div class="w-14 h-14 bg-green-50 rounded-xl flex items-center justify-center text-green-600 text-2xl mb-6 group-hover:bg-green-600 group-hover:text-white transition-colors">
-<i class="fas fa-comment-sms"></i>
-</div>
-<h4 class="text-xl font-bold text-slate-900 mb-4">Automated SMS Alerts</h4>
-<p class="text-slate-600 leading-relaxed">
-Immediately notifies registered mobile numbers when water levels reach predefined critical thresholds (Green, Orange, Red).
-</p>
-</div>
-<!-- Feature 3 -->
-<div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl transition-all duration-300 group">
-<div class="w-14 h-14 bg-red-50 rounded-xl flex items-center justify-center text-red-600 text-2xl mb-6 group-hover:bg-red-600 group-hover:text-white transition-colors">
-<i class="fas fa-phone-flip"></i>
-</div>
-<h4 class="text-xl font-bold text-slate-900 mb-4">Hotline Dissemination</h4>
-<p class="text-slate-600 leading-relaxed">
-Each alert includes active emergency hotlines to facilitate rapid access to rescue and relief services.
-</p>
-</div>
-</div>
-</div>
-</section>
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 bg-slate-950 relative">
+        <div class="container mx-auto max-w-6xl grid md:grid-cols-2 gap-16 items-center">
+            <div class="order-2 md:order-1">
+                <div class="inline-block p-3 bg-blue-900/30 rounded-2xl mb-6">
+                    <i class="fas fa-school text-blue-400 text-xl"></i>
+                </div>
+                <h2 class="text-4xl font-bold mb-8 text-white tracking-tight">Who We Are</h2>
+                <p class="text-lg text-slate-400 leading-relaxed mb-8">
+                    We are a group of researchers from the Senior High School Department at <strong>St. Mary’s Academy of Guagua, Inc.</strong>, located in San Roque, Guagua, Pampanga. Our commitment is centered on developing innovative solutions that help communities become more prepared for natural disasters, particularly flooding, which remains a timely and significant concern in our country.
+                </p>
+                <div class="bg-slate-900 p-8 rounded-3xl border border-slate-800 shadow-inner">
+                    <h3 class="text-blue-400 font-bold uppercase tracking-widest text-sm mb-4">Our Mission</h3>
+                    <p class="text-slate-300 italic text-xl leading-relaxed">
+                        "To create a flood monitoring and early-warning system that enhances community preparedness and disaster response through timely warnings and important hotline information dissemination."
+                    </p>
+                </div>
+            </div>
+            <div class="order-1 md:order-2 grid grid-cols-2 gap-4">
+                <div class="space-y-4 pt-12">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop" class="rounded-3xl shadow-2xl" alt="Academic Environment">
+                    <img src="https://images.unsplash.com/photo-1454165833767-027ffea7025c?q=80&w=800&auto=format&fit=crop" class="rounded-3xl shadow-2xl" alt="Research Planning">
+                </div>
+                <div class="space-y-4">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop" class="rounded-3xl shadow-2xl" alt="Group Collaboration">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop" class="rounded-3xl shadow-2xl" alt="Development Work">
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Technology Stack -->
-<section id="technology" class="py-20 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid lg:grid-cols-2 gap-16 items-center">
-<div>
-<h2 class="text-3xl font-bold text-slate-900 mb-6">Built with Reliable IoT Hardware</h2>
-<p class="text-slate-600 text-lg mb-8 leading-relaxed">
-Our prototype utilizes widely accessible and durable electronic components, ensuring that the system can be maintained and replicated by local communities.
-</p>
-<div class="space-y-4">
-<div class="flex items-start space-x-4">
-<div class="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-<i class="fas fa-check text-xs"></i>
-</div>
-<div>
-<h5 class="text-slate-900 font-bold">Arduino Uno Microcontroller</h5>
-<p class="text-slate-500">The central brain that processes sensor data and controls the GSM logic.</p>
-</div>
-</div>
-<div class="flex items-start space-x-4">
-<div class="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-<i class="fas fa-check text-xs"></i>
-</div>
-<div>
-<h5 class="text-slate-900 font-bold">HC-SR04 Ultrasonic Sensor</h5>
-<p class="text-slate-500">Provides non-contact water level measurement using sound wave reflection.</p>
-</div>
-</div>
-<div class="flex items-start space-x-4">
-<div class="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
-<i class="fas fa-check text-xs"></i>
-</div>
-<div>
-<h5 class="text-slate-900 font-bold">GSM Module (SIM900/800L)</h5>
-<p class="text-slate-500">Ensures reliable SMS transmission over cellular networks without needing internet.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="bg-slate-100 p-8 rounded-3xl">
-<img src="https://images.unsplash.com/photo-1553406830-ef2513450d76?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Electronics prototyping board" class="rounded-2xl shadow-lg hover:scale-105 transition-transform duration-500">
-</div>
-</div>
-</div>
-</section>
+    <!-- Cebu Flooding Section -->
+    <section id="cebu" class="py-24 px-6 bg-slate-900">
+        <div class="container mx-auto max-w-5xl text-center mb-16">
+            <h2 class="text-4xl font-bold text-white mb-6">Critical Context: The Cebu Floods</h2>
+            <p class="text-slate-400 text-lg max-w-3xl mx-auto">
+                Real-world events in November 2025 demonstrate why systems like WATCHEYE are non-negotiable for public safety.
+            </p>
+        </div>
+        <div class="container mx-auto max-w-6xl flex flex-col lg:flex-row gap-12 bg-slate-800/50 p-8 md:p-12 rounded-[3rem] border border-slate-700/50 shadow-2xl">
+            <div class="lg:w-1/2 space-y-6">
+                <div class="bg-red-500/10 text-red-400 text-xs font-bold py-1 px-3 rounded-full inline-block uppercase tracking-widest">Incident Report</div>
+                <h3 class="text-3xl font-bold text-white leading-tight">Typhoon Kalmaegi (Tino) Floods</h3>
+                <p class="text-slate-300 leading-relaxed">
+                    In November 2025, Typhoon Kalmaegi triggered catastrophic flash floods across the Philippines. Cebu province was devastated, with over <strong>49 fatalities</strong> and 400,000 residents displaced.
+                </p>
+                <p class="text-slate-300 leading-relaxed">
+                    Families were forced to roof-tops as water levels rose within minutes in areas like Mandaue City. WATCHEYE is designed to bridge this gap, providing the crucial minutes needed for evacuation.
+                </p>
+                <div class="pt-6 border-t border-slate-700">
+                    <p class="text-xs text-slate-500 italic">Reference: Wright, G. (2025). "More than 85 dead as typhoon wreaks havoc in the Philippines." BBC News.</p>
+                </div>
+            </div>
+            <div class="lg:w-1/2">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-video group">
+                    <img src="https://e3.365dm.com/25/11/1600x900/skynews-philippines-kalmaegi_7072502.png?20251105083512" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" alt="Cebu Flood Aerial View">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 text-white">
+                        <p class="text-sm font-bold opacity-80 uppercase tracking-widest">Aerial Documentation</p>
+                        <p class="text-xs">Drone view of flooded neighborhoods in Cebu, Nov 2025</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Results/Thresholds -->
-<section id="results" class="py-20 bg-slate-900 text-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="text-3xl font-bold mb-4">Empirical Results & Thresholds</h2>
-<p class="text-slate-400 text-lg">During rigorous testing, WATCHEYE maintained consistent response times and accuracy across three critical alert levels.</p>
-</div>
+    <!-- The Prototype / Technical Section -->
+    <section id="prototype" class="py-24 px-6 bg-slate-950">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-20">
+                <h2 class="text-5xl font-bold text-white mb-6">The Technology Stack</h2>
+                <p class="text-slate-400 text-xl font-light">Precision hardware for rapid emergency response.</p>
+            </div>
 
-<div class="grid md:grid-cols-3 gap-8">
-<!-- Level 1 -->
-<div class="relative p-1 rounded-2xl bg-gradient-to-b from-green-500 to-green-700">
-<div class="bg-slate-800 p-8 rounded-xl h-full">
-<span class="block text-green-400 font-bold uppercase tracking-widest text-xs mb-4">Level 1</span>
-<h4 class="text-2xl font-bold mb-4">Green (5-10 cm)</h4>
-<p class="text-slate-400 mb-6 italic">Initial monitoring phase. Residents are informed of the current status.</p>
-<div class="p-4 bg-slate-900 rounded-lg">
-<div class="flex justify-between text-sm mb-1">
-<span>Accuracy</span>
-<span class="text-green-400">99.2%</span>
-</div>
-<div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-<div class="bg-green-500 h-full w-[99%]"></div>
-</div>
-</div>
-</div>
-</div>
-<!-- Level 2 -->
-<div class="relative p-1 rounded-2xl bg-gradient-to-b from-orange-500 to-orange-700">
-<div class="bg-slate-800 p-8 rounded-xl h-full">
-<span class="block text-orange-400 font-bold uppercase tracking-widest text-xs mb-4">Level 2</span>
-<h4 class="text-2xl font-bold mb-4">Orange (10-20 cm)</h4>
-<p class="text-slate-400 mb-6 italic">Warning phase. Higher flood risk detected. Prepare for possible evacuation.</p>
-<div class="p-4 bg-slate-900 rounded-lg">
-<div class="flex justify-between text-sm mb-1">
-<span>Accuracy</span>
-<span class="text-orange-400">98.8%</span>
-</div>
-<div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-<div class="bg-orange-500 h-full w-[98%]"></div>
-</div>
-</div>
-</div>
-</div>
-<!-- Level 3 -->
-<div class="relative p-1 rounded-2xl bg-gradient-to-b from-red-500 to-red-700">
-<div class="bg-slate-800 p-8 rounded-xl h-full">
-<span class="block text-red-400 font-bold uppercase tracking-widest text-xs mb-4">Level 3</span>
-<h4 class="text-2xl font-bold mb-4">Red (20+ cm)</h4>
-<p class="text-slate-400 mb-6 italic">Critical alert level. Severe flooding. Immediate action and rescue required.</p>
-<div class="p-4 bg-slate-900 rounded-lg">
-<div class="flex justify-between text-sm mb-1">
-<span>Accuracy</span>
-<span class="text-red-400">99.5%</span>
-</div>
-<div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
-<div class="bg-red-500 h-full w-[99%]"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
+            <div class="grid md:grid-cols-3 gap-8 mb-20">
+                <!-- Hardware Card -->
+                <div class="glass p-10 rounded-[2.5rem] border border-slate-800 hover:bg-white/5 transition duration-500">
+                    <div class="w-16 h-16 bg-blue-600/20 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fas fa-microchip text-blue-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Central Hub</h3>
+                    <p class="text-slate-400 mb-6">Built on <strong>Arduino Uno</strong> for robust sensor data processing and logical switching.</p>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i> Fast detection cycles</li>
+                        <li><i class="fas fa-check text-blue-500 mr-2"></i> Redundant logic paths</li>
+                    </ul>
+                </div>
+                <!-- Sensor Card -->
+                <div class="glass p-10 rounded-[2.5rem] border border-slate-800 hover:bg-white/5 transition duration-500">
+                    <div class="w-16 h-16 bg-cyan-600/20 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fas fa-wave-square text-cyan-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Precision Detection</h3>
+                    <p class="text-slate-400 mb-6">Uses high-sensitivity <strong>Ultrasonic Sensors</strong> to measure water rise without physical contact.</p>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><i class="fas fa-check text-cyan-500 mr-2"></i> Millimeter precision</li>
+                        <li><i class="fas fa-check text-cyan-500 mr-2"></i> Non-contact monitoring</li>
+                    </ul>
+                </div>
+                <!-- Comms Card -->
+                <div class="glass p-10 rounded-[2.5rem] border border-slate-800 hover:bg-white/5 transition duration-500">
+                    <div class="w-16 h-16 bg-indigo-600/20 rounded-2xl flex items-center justify-center mb-8">
+                        <i class="fas fa-satellite text-indigo-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Remote Alerts</h3>
+                    <p class="text-slate-400 mb-6">Integrated with the <strong>GSM Module (SIM800L)</strong> for cellular notification broadcasting.</p>
+                    <ul class="space-y-3 text-sm text-slate-500">
+                        <li><i class="fas fa-check text-indigo-500 mr-2"></i> SMS Hotline info</li>
+                        <li><i class="fas fa-check text-indigo-500 mr-2"></i> Global network support</li>
+                    </ul>
+                </div>
+            </div>
 
-<div class="mt-16 p-8 bg-slate-800 rounded-3xl border border-slate-700 text-center">
-<div class="inline-flex items-center space-x-3 text-blue-400 mb-4">
-<i class="fas fa-clock"></i>
-<span class="font-bold">RESPONSE TIME: < 10 SECONDS</span>
-</div>
-<p class="text-slate-400 max-w-2xl mx-auto">
-The integration of trend-analysis algorithms allows WATCHEYE to interpret data and send notifications within seconds of a threshold transition.
-</p>
-</div>
-</div>
-</section>
+            <!-- LED Visualization -->
+            <div class="max-w-4xl mx-auto glass p-8 md:p-12 rounded-[3rem] border border-white/5">
+                <h3 class="text-2xl font-bold text-center text-white mb-12 uppercase tracking-widest">Visual & Audible Warning System</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="text-center group">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-slate-900 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition duration-500 border border-emerald-500/20">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500 animate-pulse"></div>
+                        </div>
+                        <h4 class="text-emerald-400 font-bold mb-2">GREEN ALERT</h4>
+                        <p class="text-slate-500 text-sm">Safe water levels detected. LED turns on.</p>
+                    </div>
+                    <div class="text-center group">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-slate-900 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)] transition duration-500 border border-amber-500/20">
+                            <div class="w-8 h-8 rounded-full bg-amber-500 animate-pulse"></div>
+                        </div>
+                        <h4 class="text-amber-400 font-bold mb-2">ORANGE ALERT</h4>
+                        <p class="text-slate-500 text-sm">Rise detected. Warning LED turns on.</p>
+                    </div>
+                    <div class="text-center group">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-slate-900 flex items-center justify-center mb-6 group-hover:shadow-[0_0_30px_rgba(239,68,68,0.3)] transition duration-500 border border-red-500/20 relative">
+                            <div class="w-8 h-8 rounded-full bg-red-500 animate-pulse"></div>
+                            <i class="fas fa-volume-up absolute -top-2 -right-2 text-red-500 animate-bounce"></i>
+                        </div>
+                        <h4 class="text-red-400 font-bold mb-2">RED ALERT</h4>
+                        <p class="text-slate-500 text-sm">Critical level. LED turns on and <strong>buzzer activates</strong> for immediate alarm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- Team Section -->
-<section id="team" class="py-20 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="text-sm font-bold text-blue-600 tracking-widest uppercase mb-3">The Researchers</h2>
-<h3 class="text-3xl font-bold text-slate-900">Dedicated to Community Resilience</h3>
-</div>
+    <!-- Process and Results -->
+    <section class="py-24 px-6 bg-white text-slate-900">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col lg:flex-row gap-16">
+                <div class="lg:w-1/2">
+                    <h2 class="text-4xl font-extrabold mb-8 tracking-tight">Process & Results</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                        The study employed a <strong>quantitative developmental research design</strong>. We built and tested the system to ensure reliability under simulated flood conditions.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="flex gap-6 items-start">
+                            <div class="text-3xl font-bold text-blue-200">01</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Detection Integrity</h4>
+                                <p class="text-slate-500">The HC-SR04 sensor showed high accuracy in correlating ultrasonic bounce time with water surface distance.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-start">
+                            <div class="text-3xl font-bold text-blue-200">02</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">SMS Response</h4>
+                                <p class="text-slate-500">The SIM800L module successfully delivered SMS notifications within 10-15 seconds of threshold breach.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-start">
+                            <div class="text-3xl font-bold text-blue-200">03</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">LED Warning Logic</h4>
+                                <p class="text-slate-500">Verified sequential lighting of Green, Orange, and Red indicators corresponding to precise water-level increments.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-6 items-start">
+                            <div class="text-3xl font-bold text-blue-200">04</div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-2">Audible Alert Activation</h4>
+                                <p class="text-slate-500">Confirmed that reaching the <strong>Red critical threshold</strong> successfully triggers the buzzer to buzz, providing an immediate audible alarm alongside the visual signal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 bg-slate-50 rounded-[3rem] p-10 flex flex-col justify-center">
+                    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop" class="rounded-2xl shadow-xl mb-8" alt="Circuit Detail">
+                    <p class="text-center text-slate-400 text-sm italic">"The synchronized LED and buzzer system serves as a multi-sensory early-warning tool for enhanced community safety."</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-<!-- Member 1 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Haley Therron Bansil</h5>
-</div>
-<!-- Member 2 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Louise Arn Bau</h5>
-</div>
-<!-- Member 3 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Kezianne Leo Anthony De Dios</h5>
-</div>
-<!-- Member 4 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Einielle Marie Dimalanta</h5>
-</div>
-<!-- Member 5 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Gian Carlo Galima</h5>
-</div>
-<!-- Member 6 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Reynie Sabas</h5>
-</div>
-<!-- Member 7 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Princess Joy Sampang</h5>
-</div>
-<!-- Member 8 -->
-<div class="text-center group">
-<div class="w-24 h-24 bg-slate-100 rounded-full mx-auto mb-4 flex items-center justify-center text-slate-400 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-<i class="fas fa-user"></i>
-</div>
-<h5 class="font-bold text-slate-900">Gabriel Ian Soriano</h5>
-</div>
-</div>
+    <!-- Team Section -->
+    <section id="team" class="py-24 px-6 bg-slate-950">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-white mb-4">The Research Group</h2>
+                <p class="text-blue-400 font-bold uppercase tracking-widest text-sm">Group 4 Researchers</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Princess Joy M. Sampang -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-blue-500 hover:scale-105 transition duration-300">
+                    <div class="text-blue-500 text-xs font-black mb-2 uppercase tracking-tighter">Lead Researcher</div>
+                    <h3 class="text-xl font-bold text-white mb-1">Princess Joy M. Sampang</h3>
+                    <div class="w-8 h-1 bg-blue-500/20 rounded-full"></div>
+                </div>
+                <!-- Bansil -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Haley Therron B. Bansil</h3>
+                </div>
+                <!-- Bau -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Louise Arn C. Bau</h3>
+                </div>
+                <!-- De Dios -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Kezianne Leo Anthony E. De Dios</h3>
+                </div>
+                <!-- Dimalanta -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Einielle Marie B. Dimalanta</h3>
+                </div>
+                <!-- Galima -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Gian Carlo M. Galima</h3>
+                </div>
+                <!-- Sabas -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Reynie T. Sabas</h3>
+                </div>
+                <!-- Soriano -->
+                <div class="glass p-8 rounded-3xl border-l-4 border-l-slate-700 hover:scale-105 transition duration-300">
+                    <h3 class="text-lg font-bold text-slate-300">Gabriel Ian S. Soriano</h3>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="mt-20 border-t border-slate-100 pt-10 text-center">
-<p class="text-slate-500 font-medium">St. Mary's Academy of Guagua Senior High School</p>
-<p class="text-slate-400 text-sm mt-1">Research Paper Presented to the Faculty of Senior High School, March 2025</p>
-</div>
-</div>
-</section>
+    <!-- Footer -->
+    <footer class="py-16 px-6 bg-slate-900 border-t border-slate-800">
+        <div class="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-3 mb-4">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-eye text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tighter text-white">WATCHEYE</span>
+                </div>
+                <p class="text-slate-500 font-bold uppercase tracking-[0.2em] text-[10px] mb-2">Project Repository</p>
+                <p class="text-slate-400">St. Mary’s Academy of Guagua, Inc.</p>
+                <p class="text-slate-500 text-sm">San Roque, Guagua, Pampanga</p>
+            </div>
+            <div class="text-center md:text-right">
+                <p class="text-slate-500 text-sm">&copy; 2026 WATCHEYE Research Group.</p>
+                <p class="text-slate-600 text-xs mt-2 uppercase tracking-widest">A Capstone Initiative</p>
+            </div>
+        </div>
+    </footer>
 
-<!-- Footer -->
-<footer class="bg-slate-50 py-12 border-t border-slate-200">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-<div class="flex items-center justify-center space-x-2 mb-6">
-<i class="fas fa-eye text-blue-600 text-xl"></i>
-<span class="text-lg font-bold tracking-tight text-slate-800 uppercase">WatchEye</span>
-</div>
-<p class="text-slate-500 text-sm">
-&copy; 2025 WATCHEYE Capstone Team. All rights reserved. <br>
-Empowering communities with smart technology for disaster risk reduction.
-</p>
-</div>
-</footer>
-
-<script>
-// Mobile Menu Toggle
-const btn = document.getElementById('mobile-menu-btn');
-const menu = document.getElementById('mobile-menu');
-
-btn.addEventListener('click', () => {
-menu.classList.toggle('hidden');
-});
-
-// Close menu on link click
-const links = menu.querySelectorAll('a');
-links.forEach(link => {
-link.addEventListener('click', () => {
-menu.classList.add('hidden');
-});
-});
-</script>
 </body>
 </html>
